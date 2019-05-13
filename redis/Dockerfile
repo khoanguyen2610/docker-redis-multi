@@ -1,4 +1,5 @@
 FROM redis:latest
+
 COPY redis-entrypoint.sh .
 COPY redis.conf .
 RUN mkdir -p /etc/redis &&\
@@ -12,17 +13,18 @@ RUN mkdir -p /etc/redis &&\
 RUN chmod +x /etc/redis/redis-entrypoint.sh
 
 # Set up a build environment
-# ENV DEPS "python python-setuptools python-pip wget unzip build-essential"
-# RUN set -ex;\
-#     deps="$DEPS";\
-#     apt-get update; \
-# 	apt-get install -y build-essential wget zip make
+ENV DEPS "python python-setuptools python-pip wget unzip build-essential"
+RUN set -ex;\
+    deps="$DEPS";\
+    apt-get update; \
+	apt-get install -y build-essential wget zip make
 
-# # Install Module ReJson
-# WORKDIR /etc/redis/modules
-# RUN wget -O ReJSON.zip https://github.com/RedisLabsModules/ReJSON/archive/master.zip
-# RUN unzip ReJSON
-# WORKDIR /etc/redis/modules/redisjson-master
-# RUN make
+# Install Module ReJson
+WORKDIR /etc/redis/modules
+RUN wget -O ReJSON.zip https://github.com/RedisLabsModules/ReJSON/archive/master.zip
+RUN unzip ReJSON
+WORKDIR /etc/redis/modules/RedisJSON-master
+RUN make
+RUN echo "\r\nloadmodule /etc/redis/modules/RedisJSON-master/src/rejson.so" >> /etc/redis/redis.conf
 
 ENTRYPOINT [ "/etc/redis/redis-entrypoint.sh" ]
