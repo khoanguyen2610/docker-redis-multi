@@ -1,5 +1,5 @@
 #!/bin/sh
-tee /etc/redis/sentinel.conf <<EOF
+tee $REDIS_DIR/sentinel.conf <<EOF
 port 26379
 daemonize yes
 logfile "/var/log/sentinel.log"
@@ -12,12 +12,12 @@ sentinel parallel-syncs docker-cluster 1
 sentinel failover-timeout docker-cluster $SENTINEL_FAILOVER
 EOF
 
-redis-sentinel /etc/redis/sentinel.conf
+redis-sentinel $REDIS_DIR/sentinel.conf
 
 if [ "$IS_SLAVE" == true ]; then
-	redis-server /etc/redis/redis.conf --slaveof $MASTER_HOST 6379 \
-        --loadmodule /etc/redis/modules/rejson-master/src/rejson.so
+	redis-server $REDIS_DIR/redis.conf --slaveof $MASTER_HOST 6379 \
+        --loadmodule $REDIS_MODULE_DIR/redisjson-master/src/rejson.so
 else
-    redis-server /etc/redis/redis.conf \
-        --loadmodule $LIBDIR/rejson.so
+    redis-server $REDIS_DIR/redis.conf \
+        --loadmodule $REDIS_MODULE_DIR/redisjson-master/src/rejson.so
 fi
