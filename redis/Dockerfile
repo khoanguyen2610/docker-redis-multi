@@ -1,5 +1,13 @@
 FROM redis:latest
 
+# Set up a build environment
+ENV DEPS "python python-setuptools python-pip wget unzip build-essential"
+RUN set -ex;\
+    deps="$DEPS";\
+    apt-get update; \
+	apt-get install -y build-essential wget zip make
+
+# Set up config file
 COPY redis-entrypoint.sh .
 COPY redis.conf .
 RUN mkdir -p /etc/redis &&\
@@ -11,13 +19,6 @@ RUN mkdir -p /etc/redis &&\
     mv redis-entrypoint.sh /etc/redis/redis-entrypoint.sh &&\
     chown redis:redis /etc/redis/redis-entrypoint.sh
 RUN chmod +x /etc/redis/redis-entrypoint.sh
-
-# Set up a build environment
-ENV DEPS "python python-setuptools python-pip wget unzip build-essential"
-RUN set -ex;\
-    deps="$DEPS";\
-    apt-get update; \
-	apt-get install -y build-essential wget zip make
 
 # Install Module ReJson
 WORKDIR /etc/redis/modules
