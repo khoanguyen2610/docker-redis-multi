@@ -1,0 +1,9 @@
+dyn_o_mite:
+    dyn_listen: dynomite:8101
+    data_store: 0
+    listen: dynomite:8102
+    dyn_seed_provider: simple_provider
+    servers:
+    - proxy:6387:1
+    tokens: 437425602
+    stats_listen: dynomite:22222
