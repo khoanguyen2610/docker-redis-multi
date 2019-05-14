@@ -8,6 +8,6 @@
 !.vscode/launch.json
 !.vscode/extensions.json
 .history
-
+/redis/data
 
 # End of https://www.gitignore.io/api/visualstudiocode
