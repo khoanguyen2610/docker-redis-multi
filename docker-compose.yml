@@ -7,12 +7,13 @@ services:
         ports:
             - 6379:6379
         networks:
-            - host
+            mynet:
+                ipv4_address: 10.10.12.221
         env_file:
             - './redis/env/common_variables.env'
             - './redis/env/master_variables.env'
-        volumes:
-            - './redis/data/6379:/etc/redis/data'
+        # volumes:
+        #     - './redis/data/6379:/etc/redis/data'
 
     redis02:
         container_name: redis02
@@ -22,12 +23,13 @@ services:
         depends_on:
             - redis01
         networks:
-            - host
+            mynet:
+                ipv4_address: 10.10.12.222
         env_file:
             - './redis/env/common_variables.env'
             - './redis/env/slave_variables.env'
-        volumes:
-            - './redis/data/6380:/etc/redis/data'
+        # volumes:
+        #     - './redis/data/6380:/etc/redis/data'
 
     redis03:
         container_name: redis03
@@ -37,12 +39,13 @@ services:
         depends_on:
             - redis01
         networks:
-            - host
+            mynet:
+                ipv4_address: 10.10.12.223
         env_file:
             - './redis/env/common_variables.env'
             - './redis/env/slave_variables.env'
-        volumes:
-            - './redis/data/6381:/etc/redis/data'
+        # volumes:
+        #     - './redis/data/6381:/etc/redis/data'
 
     proxy:
         container_name: haproxy
@@ -52,13 +55,16 @@ services:
             - redis02
             - redis03
         networks:
-            - host
+            mynet:
+                ipv4_address: 10.10.12.224
         ports:
             - '9000:9000'
-            - '8080:80'
             - '6387:6387'
             - '6388:6388'
 
 networks:
-  host:
-
+  mynet:
+    driver: bridge
+    ipam:
+      config:
+      - subnet: 10.10.12.0/24
