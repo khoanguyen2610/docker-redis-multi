@@ -7,12 +7,12 @@ services:
         ports:
             - 6379:6379
         networks:
-            - proxy
+            - host
         env_file:
             - './redis/env/common_variables.env'
             - './redis/env/master_variables.env'
-        volumes:
-            - './redis/data/6379:/etc/redis/data'
+        # volumes:
+        #     - './redis/data/6379:/etc/redis/data'
 
     redis02:
         container_name: redis02
@@ -22,12 +22,12 @@ services:
         depends_on:
             - redis01
         networks:
-            - proxy
+            - host
         env_file:
             - './redis/env/common_variables.env'
             - './redis/env/slave_variables.env'
-        volumes:
-            - './redis/data/6380:/etc/redis/data'
+        # volumes:
+        #     - './redis/data/6380:/etc/redis/data'
 
     redis03:
         container_name: redis03
@@ -37,12 +37,12 @@ services:
         depends_on:
             - redis01
         networks:
-            - proxy
+            - host
         env_file:
             - './redis/env/common_variables.env'
             - './redis/env/slave_variables.env'
-        volumes:
-            - './redis/data/6381:/etc/redis/data'
+        # volumes:
+        #     - './redis/data/6381:/etc/redis/data'
 
     proxy:
         container_name: haproxy
@@ -52,13 +52,12 @@ services:
             - redis02
             - redis03
         networks:
-            - proxy
+            - host
         ports:
             - '9000:9000'
             - '6387:6387'
             - '6388:6388'
 
 networks:
-    proxy:
-        external: true
+    host:
 
