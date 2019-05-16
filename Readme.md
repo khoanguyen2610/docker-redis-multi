@@ -1,6 +1,6 @@
 # Build fault-tolerance Redis cluster with Sentinel on Docker
 ## Topology
-![topology](https://raw.githubusercontent.com/selcukusta/redis-sentinel-with-haproxy/master/redis-sentinel-mode-topology.png)
+![topology](https://vnsys.files.wordpress.com/2019/01/redis-ha-with-haproxy-2.jpg?w=614)
 ## Run
 `docker-compose up -d`
 ## Tail sentinel logs
